@@ -29,7 +29,7 @@ $tarefa = mysqli_fetch_array($result_tarefas);
     ?>
     <h3>Tarefa</h3>
     <?php
-        if($_SESSION['perfil'] == 1){?>
+        if ($_SESSION['perfil'] == 1) {?>
     Usuario:
     <?=$tarefa['nome'] ?> </br>
         <?php } ?>
