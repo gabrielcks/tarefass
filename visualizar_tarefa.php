@@ -1,22 +1,20 @@
 <?php
 require_once('bloqueio.php');
-$sql="SELECT* FROM categoria";
-$codu =$_SESSION['cod'];
-$result_cat= mysqli_query($con,$sql);
+$sql = "SELECT* FROM categoria";
+$codu = $_SESSION['cod'];
+$result_cat = mysqli_query($con,$sql);
+$cod = $_GET['cod'];
 
-$cod=$_GET['cod'];
-if($_SESSION['perfil'] != 1){
-
-    $sql2="SELECT* , t.cod as codt FROM tarefas t where usuario_cod = $codu and cod = $cod ";
+if ($_SESSION['perfil'] != 1) {
+    $sql2 = "SELECT* , t.cod as codt FROM tarefas t where usuario_cod = $codu and cod = $cod ";
+} else {
+    $sql2 = "SELECT* ,u.cod as codu , t.cod as codt FROM tarefas t, usuario u  WHERE t.usuario_cod = u.cod and t.cod = $cod  ";
 }
-else{
-
-$sql2="SELECT* ,u.cod as codu , t.cod as codt FROM tarefas t, usuario u  WHERE t.usuario_cod = u.cod and t.cod = $cod  ";
-}
-
-$result_tarefas= mysqli_query($con, $sql2);
+$result_tarefas = mysqli_query($con, $sql2);
 $tarefa = mysqli_fetch_array($result_tarefas);
+
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -26,7 +24,7 @@ $tarefa = mysqli_fetch_array($result_tarefas);
 </head>
 <body>
 
-<?php
+    <?php
         require_once("header.php");
     ?>
     <h3>Tarefa</h3>
@@ -43,8 +41,8 @@ $tarefa = mysqli_fetch_array($result_tarefas);
     <?=$tarefa['hora'] ?> </br>
     <?php 
                 $cod_tarefa = $tarefa['categoria_cod'];
-                $sql="SELECT* FROM categoria WHERE cod =$cod_tarefa ";
-                $result_cat= mysqli_query($con,$sql);
+                $sql = "SELECT* FROM categoria WHERE cod =$cod_tarefa ";
+                $result_cat = mysqli_query($con,$sql);
                 $cat_tarefa = mysqli_fetch_array($result_cat);
     ?>
     Categoria:<td><?= $cat_tarefa['nome']?></td>

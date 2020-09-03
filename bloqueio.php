@@ -5,4 +5,3 @@ if(!isset($_SESSION['email']) and !isset($_SESSION['perfil']) ){
 
 }
 require_once('db/conexao.php');
-?>

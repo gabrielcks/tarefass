@@ -5,4 +5,3 @@ if (!$con) {
     die('Não foi possível conectar:');
 }
 //mysqli_close($conexao);
-?>

@@ -1,14 +1,14 @@
 <?php
 //session_start();
-if(isset($_GET['erro'])){
-    if($_GET['erro'] == 1){
+if (isset($_GET['erro'])) {
+    if ($_GET['erro'] == 1) {
         $erro = "Acesso Negado!";
-    }else if($_GET['erro'] ==2){
-            $erro = "usuario ou senha invalidas";
-    }else if($_GET['erro'] ==3){
-    $erro = "logout realizado com sucesso!";
-}
-}else{
+    } else if ($_GET['erro'] ==2) {
+        $erro = "usuario ou senha invalidas";
+    } else if ($_GET['erro'] ==3) {
+        $erro = "logout realizado com sucesso!";
+    }
+} else {
     $erro = "";
 }
 
