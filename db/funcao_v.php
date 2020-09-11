@@ -1,6 +1,16 @@
 <?php
 require_once("conexao.php");
 
+
+function higienizarSenha($senha)
+
+{
+    if (filter_var($senha  ,FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH)) {
+    return $senha;
+    }
+}
+
+
 function higienizarNome($nome)
 {
     if (filter_var($nome  ,FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH)) {
@@ -32,22 +42,23 @@ function validarEmail($email)
 { 
 
     if (empty($email)) {
-        echo "<script type='text/javascript'>alert('e-mail vazio')</script>";
-        return false;
+        throw new Exception("E-mail vazio",1);
+       
     }
-
     if (false === filter_var($email ,FILTER_VALIDATE_EMAIL)) {
-        echo "<script type='text/javascript'>alert('e-mail invalido')</script>";
-        return false;
+        throw new Exception("E-mail e invalido",2);
+      
     }
     
     $dadosDoUsuario = consultarUsuario($email); 
-    if (!empty($dadosDoUsuario)) {
-        echo "<script type='text/javascript'>alert('e-mail ja existente')</script>";
-        return false;
+     if (!empty($dadosDoUsuario)) {
+        
+        throw new Exception("E-mail ja existente",3);
+        
     }
 
     return true;
+    echo "tudo certo<br>";
 }
 
 
@@ -55,18 +66,18 @@ function validarNome($nome)
 {
 
     if (empty($nome)) {
-        echo "<script type='text/javascript'>alert('O campo Nome não pode ser vazio')</script>";
-        return false;
+        throw new Exception("O campo Nome não pode ser vazio", 4);
+        
     }    
     
     if (strlen($nome) < 4 ) {
-        echo "<script>  alert('o campo Nome deve conter no minimo 4 caracteres ') </script>";
-        return false ; 
+        throw new Exception("O campo Nome deve conter no minimo 4 caracteres" ,5);
+         
     }
     
     if (filter_var($nome, FILTER_SANITIZE_NUMBER_INT)) {
-        echo "<script>  alert('o campo Nome de ve conter apenas letras ') </script>"; 
-        return false;
+        throw new Exception("O campo Nome deve conter apenhas letras",6);
+    
     }
         return true ;
 }
@@ -75,18 +86,37 @@ function validarSenha($senha)
 {
     
     if (strlen($senha) < 8 ) {
-        echo "<script>  alert('o campo senha deve conter no minimo 8 caracteres ') </script>";
-        return false ; 
+        throw new Exception("O campo senha deve conter no minimo 8 caracteres",7);
+        
     } 
 
     if (!preg_match('/[A-Za-z].*[0-9]|[0-9].*[A-Za-z]/', $senha)) { 
-        echo "<script>  alert('o campo senha deve conter Contém pelo menos uma letra e um número ') </script>";
-        return false ;
+        throw new Exception("O campo senha deve conter pelo menos uma letra e um numero", 8); 
+        
     }
     return true ;      
 }
 
 
+
+function validarFormulario($nome , $senha, $email){
+    global $menssagem;
+
+    try {
+        validarEmail($email);
+        validarNome($nome);
+        validarSenha($senha);
+        validarNome($nome);
+
+    } catch (Exception $e) {
+        $menssagem = $e->getMessage();
+        // print($menssagem);
+        return false;   
+    } 
+            
+        return true;
+                
+}
 
 function Salvar( $nome,$senha,$email,$perfil)
 {   
